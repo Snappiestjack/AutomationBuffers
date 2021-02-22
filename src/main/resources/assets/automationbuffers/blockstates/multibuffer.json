@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "automationbuffers:block/multibuffer",
+      "x": 90
+    },
+    "facing=up": {
+      "model": "automationbuffers:block/multibuffer",
+      "x": -90
+    },
+    "facing=north": {
+      "model": "automationbuffers:block/multibuffer"
+    },
+    "facing=south": {
+      "model": "automationbuffers:block/multibuffer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "automationbuffers:block/multibuffer",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "automationbuffers:block/multibuffer",
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "automationbuffers:block/multibuffer",
+    "up": "automationbuffers:block/multibuffer",
+    "north": "automationbuffers:block/multibuffer_front",
+    "south": "automationbuffers:block/multibuffer",
+    "east": "automationbuffers:block/multibuffer",
+    "west": "automationbuffers:block/multibuffer",
+    "particle": "automationbuffers:block/multibuffer_front"
+  }
+}
