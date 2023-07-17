@@ -77,24 +77,28 @@ public class MultiBufferContainer extends Container {
 
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+        final int numSlots = MultiBufferTile.NUMBER_OF_ITEM_SLOTS;
+        final int inventorySize = 27;
+        final int hotbarSize = 9;
+
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
             ItemStack stack = slot.getStack();
             itemstack = stack.copy();
-            if (index < 3) {
-                if (!this.mergeItemStack(stack, 3, 39, true)) {
+            if (index < numSlots) {
+                if (!this.mergeItemStack(stack, numSlots, numSlots + inventorySize + hotbarSize, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onSlotChange(stack, itemstack);
             } else {
-                if (!this.mergeItemStack(stack, 0, 3, false)) {
+                if (!this.mergeItemStack(stack, 0, numSlots, false)) {
                     return ItemStack.EMPTY;
-                } else if (index < 30) {
-                    if (!this.mergeItemStack(stack, 30, 39, false)) {
+                } else if (index < numSlots + inventorySize) {
+                    if (!this.mergeItemStack(stack, numSlots + inventorySize, numSlots + inventorySize + hotbarSize, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < 39 && !this.mergeItemStack(stack, 3, 30, false)) {
+                } else if (index < (numSlots + inventorySize + hotbarSize) && !this.mergeItemStack(stack, numSlots, numSlots + inventorySize, false)) {
                     return ItemStack.EMPTY;
                 }
             }
