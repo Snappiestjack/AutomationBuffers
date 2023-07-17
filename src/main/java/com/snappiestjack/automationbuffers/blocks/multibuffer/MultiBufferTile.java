@@ -24,9 +24,9 @@ import static com.snappiestjack.automationbuffers.setup.Registration.MULTIBUFFER
 
 public class MultiBufferTile extends TileEntity implements ITickableTileEntity {
 
-    private final int CAPACITY = 8000;
-    private final int NUMBER_OF_TANKS = 1;
-    static final int NUMBER_OF_ITEM_SLOTS = 3;
+    static final int TANK_CAPACITY = 20000;
+    static final int NUMBER_OF_TANKS = 1; // Unused
+    static final int NUMBER_OF_ITEM_SLOTS = 9;
 
     private ItemStackHandler itemHandler = createItemHandler();
     private FluidTank internalTank = createFluidTank();
@@ -72,7 +72,7 @@ public class MultiBufferTile extends TileEntity implements ITickableTileEntity {
     }
 
     private FluidTank createFluidTank() {
-        return new FluidTank(CAPACITY){
+        return new FluidTank(TANK_CAPACITY){
             @Override
             protected void onContentsChanged() {
                 super.onContentsChanged();

@@ -22,8 +22,9 @@ public class MultiBufferContainer extends Container {
     private PlayerEntity playerEntity;
     private IItemHandler playerInventory;
 
-    int topleftinvslotx = 8;
-    int topleftinvsloty = 91;
+    private final int topleftinvslotx = 8;
+    private final int topleftinvsloty = 91;
+    private final int invslotw = 18; // Width of inventory slot
 
     public MultiBufferContainer(int windowId, World world, BlockPos blockPos, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         super(Registration.MULTIBUFFER_CONTAINER.get(), windowId);
@@ -37,15 +38,16 @@ public class MultiBufferContainer extends Container {
 
     private void addOwnSlots() {
         tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            int x = topleftinvslotx + 18;
-            int y = topleftinvsloty - 72;
-
+            int x = topleftinvslotx;
+            int y = topleftinvsloty;
             // Slots for the MultiBuffer
-            int slotIndex = 0;
-            for (int i = 0; i < handler.getSlots(); i++) {
+            for (int slotIndex = 0; slotIndex < handler.getSlots(); slotIndex++) {
+                if (slotIndex % 3 == 0) { // When starting a new row (including the first)
+                    x = topleftinvslotx;
+                    y += invslotw;
+                }
+                x += invslotw;
                 addSlot(new SlotItemHandler(handler, slotIndex, x, y));
-                slotIndex++;
-                x += 18;
             }
         });
     }
