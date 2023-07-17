@@ -14,11 +14,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MultiBufferScreen extends ContainerScreen<MultiBufferContainer> {
@@ -43,10 +45,7 @@ public class MultiBufferScreen extends ContainerScreen<MultiBufferContainer> {
             if(!fluid.isEmpty()) {
 
                 String fluidAmount = String.valueOf(fluid.getAmount());
-
-                List<ITextComponent> tooltip = new ArrayList<>();
-                tooltip.add(fluid.getDisplayName());
-                tooltip.add(new TranslationTextComponent(": " + fluidAmount + " mb"));
+                List<ITextComponent> tooltip = Collections.singletonList(new TranslationTextComponent("tooltip.fluidmb", fluid.getDisplayName(), new StringTextComponent(fluidAmount)));
                 func_243308_b(matrixStack, tooltip, mouseX, mouseY);
             }
         }
@@ -69,7 +68,7 @@ public class MultiBufferScreen extends ContainerScreen<MultiBufferContainer> {
         this.minecraft.getTextureManager().bindTexture(GUI);
         this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize + 10);
 
-        renderFluidTank(getFluid(),8000,relX + 98, relY + 21, 0, 16, 47);
+        renderFluidTank(getFluid(),MultiBufferTile.TANK_CAPACITY,relX + 98, relY + 21, 0, 16, 47);
     }
 
     public static void renderFluidTank(FluidStack fluidStack, int tankCapacity, double x, double y, double zLevel, double width, double height) {

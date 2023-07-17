@@ -22,7 +22,7 @@ repositories {
     maven { url 'https://modmaven.dev/' }
 }
 
-version = '0.1'
+version = '0.2'
 group = 'com.snappiestjack.automationbuffers' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'automationbuffers'
 

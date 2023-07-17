@@ -22,8 +22,9 @@ public class MultiBufferContainer extends Container {
     private PlayerEntity playerEntity;
     private IItemHandler playerInventory;
 
-    int topleftinvslotx = 8;
-    int topleftinvsloty = 91;
+    private final int topleftinvslotx = 8;
+    private final int topleftinvsloty = 91;
+    private final int invslotw = 18; // Width of inventory slot
 
     public MultiBufferContainer(int windowId, World world, BlockPos blockPos, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         super(Registration.MULTIBUFFER_CONTAINER.get(), windowId);
@@ -37,15 +38,16 @@ public class MultiBufferContainer extends Container {
 
     private void addOwnSlots() {
         tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            int x = topleftinvslotx + 18;
-            int y = topleftinvsloty - 72;
-
+            int x = topleftinvslotx;
+            int y = topleftinvsloty - 90;
             // Slots for the MultiBuffer
-            int slotIndex = 0;
-            for (int i = 0; i < handler.getSlots(); i++) {
+            for (int slotIndex = 0; slotIndex < handler.getSlots(); slotIndex++) {
+                if (slotIndex % 3 == 0) { // When starting a new row (including the first)
+                    x = topleftinvslotx;
+                    y += invslotw;
+                }
+                x += invslotw;
                 addSlot(new SlotItemHandler(handler, slotIndex, x, y));
-                slotIndex++;
-                x += 18;
             }
         });
     }
@@ -63,7 +65,7 @@ public class MultiBufferContainer extends Container {
         // Slots for the hotbar
         for (int row = 0; row < 9; ++row) {
             int x = topleftinvslotx + row * 18;
-            int y = topleftinvsloty +58 ;
+            int y = topleftinvsloty + 58 ;
             this.addSlot(new SlotItemHandler(playerInventory, row, x, y));
         }
     }
@@ -75,24 +77,28 @@ public class MultiBufferContainer extends Container {
 
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+        final int numSlots = MultiBufferTile.NUMBER_OF_ITEM_SLOTS;
+        final int inventorySize = 27;
+        final int hotbarSize = 9;
+
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
             ItemStack stack = slot.getStack();
             itemstack = stack.copy();
-            if (index < 3) {
-                if (!this.mergeItemStack(stack, 3, 39, true)) {
+            if (index < numSlots) {
+                if (!this.mergeItemStack(stack, numSlots, numSlots + inventorySize + hotbarSize, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onSlotChange(stack, itemstack);
             } else {
-                if (!this.mergeItemStack(stack, 0, 3, false)) {
+                if (!this.mergeItemStack(stack, 0, numSlots, false)) {
                     return ItemStack.EMPTY;
-                } else if (index < 30) {
-                    if (!this.mergeItemStack(stack, 30, 39, false)) {
+                } else if (index < numSlots + inventorySize) {
+                    if (!this.mergeItemStack(stack, numSlots + inventorySize, numSlots + inventorySize + hotbarSize, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < 39 && !this.mergeItemStack(stack, 3, 30, false)) {
+                } else if (index < (numSlots + inventorySize + hotbarSize) && !this.mergeItemStack(stack, numSlots, numSlots + inventorySize, false)) {
                     return ItemStack.EMPTY;
                 }
             }
