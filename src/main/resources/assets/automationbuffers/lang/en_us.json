@@ -1,4 +1,5 @@
 {
     "block.automationbuffers.multibuffer": "Multi Buffer",
-    "itemGroup.automationbuffers" : "Automation Buffers"
+    "itemGroup.automationbuffers" : "Automation Buffers",
+    "tooltip.fluidmb" : "%1$s: %2$s mb"
 }

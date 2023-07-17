@@ -14,11 +14,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MultiBufferScreen extends ContainerScreen<MultiBufferContainer> {
@@ -43,10 +45,7 @@ public class MultiBufferScreen extends ContainerScreen<MultiBufferContainer> {
             if(!fluid.isEmpty()) {
 
                 String fluidAmount = String.valueOf(fluid.getAmount());
-
-                List<ITextComponent> tooltip = new ArrayList<>();
-                tooltip.add(fluid.getDisplayName());
-                tooltip.add(new TranslationTextComponent(": " + fluidAmount + " mb"));
+                List<ITextComponent> tooltip = Collections.singletonList(new TranslationTextComponent("tooltip.fluidmb", fluid.getDisplayName(), new StringTextComponent(fluidAmount)));
                 func_243308_b(matrixStack, tooltip, mouseX, mouseY);
             }
         }
