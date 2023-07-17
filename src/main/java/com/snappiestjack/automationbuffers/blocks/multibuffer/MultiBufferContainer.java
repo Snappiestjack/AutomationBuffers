@@ -39,7 +39,7 @@ public class MultiBufferContainer extends Container {
     private void addOwnSlots() {
         tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
             int x = topleftinvslotx;
-            int y = topleftinvsloty;
+            int y = topleftinvsloty - 90;
             // Slots for the MultiBuffer
             for (int slotIndex = 0; slotIndex < handler.getSlots(); slotIndex++) {
                 if (slotIndex % 3 == 0) { // When starting a new row (including the first)
@@ -65,7 +65,7 @@ public class MultiBufferContainer extends Container {
         // Slots for the hotbar
         for (int row = 0; row < 9; ++row) {
             int x = topleftinvslotx + row * 18;
-            int y = topleftinvsloty +58 ;
+            int y = topleftinvsloty + 58 ;
             this.addSlot(new SlotItemHandler(playerInventory, row, x, y));
         }
     }
