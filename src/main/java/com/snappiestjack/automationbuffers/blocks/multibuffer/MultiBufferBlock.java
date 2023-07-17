@@ -109,4 +109,21 @@ public class MultiBufferBlock extends Block {
         }
     }
 
+    @Override
+    public boolean hasComparatorInputOverride(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
+        if (!blockState.hasTileEntity()) {
+            return 0;
+        }
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (!(tile instanceof MultiBufferTile)) {
+            return 0;
+        }
+        return ((MultiBufferTile) tile).calculateComparator();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.snappiestjack.automationbuffers.blocks.multibuffer;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -8,6 +9,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -145,5 +147,33 @@ public class MultiBufferTile extends TileEntity implements ITickableTileEntity {
 
     public FluidStack getFluid() {
         return internalTank.getFluid();
+    }
+
+    public int calculateComparator() {
+
+        double itemFullness = 0.0;
+        for(int i = 0; i < itemHandler.getSlots(); i++) {
+            ItemStack itemstack = itemHandler.getStackInSlot(i);
+            if (!itemstack.isEmpty()) {
+                double slotFullness = (double) itemstack.getCount() / (double) Math.min(itemHandler.getSlotLimit(i), itemstack.getMaxStackSize());
+                slotFullness = MathHelper.clamp(slotFullness, 0.0, 1.0);
+                itemFullness += slotFullness;
+            }
+        }
+        itemFullness = itemFullness / (double) itemHandler.getSlots();
+        itemFullness = MathHelper.clamp(itemFullness, 0.0, 1.0);
+
+        double fluidFullness = (double) internalTank.getFluidAmount() / (double) internalTank.getCapacity();
+        fluidFullness = MathHelper.clamp(fluidFullness, 0.0, 1.0);
+
+        double fullness = 0.5 * (itemFullness + fluidFullness);
+        fullness = MathHelper.clamp(fullness, 0.0, 1.0);
+
+        if (fullness == 0.0F) {
+            return 0;
+        }
+        int signal = MathHelper.floor(fullness * 14.0F) + 1;
+        signal = MathHelper.clamp(signal, 0, 15);
+        return signal;
     }
 }
